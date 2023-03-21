@@ -1,68 +1,54 @@
 #include <stdio.h>
 #define tamanho 10
 
-// Protótipos da função.
-int buscaBinaria(int *v, int valor, int inicio, int fim);
-void imprimeVetor(int *v);
+// Prototipos. 
+int buscaBinaria(int *v, int valor);
+void impremeVetor(int *v);
 
 int main(void) {
-  	int vetor[tamanho] = {-8, -1, 4, 9, 18, 34, 52, 65, 79, 90}; // para busca binario o vetor é ordenado.
+	int vetor[tamanho] = {-5,-2,1,5,7,8,12,45,67,90};
+	int valor;
 
-  	imprimeVetor(vetor);
-
-  	printf("\nDigite um número para ser encontrado dentro do vetor: ");
-  	int valor;
-  	scanf("%d", &valor);
-
-  	int indiceElem = buscaBinaria(vetor, valor, 0, tamanho);
+	impremeVetor(vetor);
 	
-	// Verifica se o número tem um indice no vetor.
-	// indiceElem = -1, não pertence ao vertor.
-  	if (indiceElem == -1) 
-	{
-    	printf("\nO elemento %d não está dentro do vetor!", valor);
-  	} 
-	else 
-	{
-    	printf("\nO elemento %d está no indice %d, posição %d do vetor: ", valor, indiceElem, indiceElem+1);
-  	}
+	printf("\nDigite um número a buscar no vetor: ");
+	scanf("%d", &valor);
 
-  	return 0;
-}
+	int resultado = buscaBinaria(vetor, valor);
 
-void imprimeVetor(int *v) 
-{
-  	printf("Vetor: [ ");
-  	for (int i = 0; i < tamanho; i++) 
-	{
-    	if (i == tamanho - 1) 
-		{
-      	printf("%d ]\n", v[i]);
-    	} 
-		else 
-		{
-      		printf("%d, ", v[i]);
-    	}
+	if( resultado == -1){
+		printf("\nO número não pertence ao vetor!");
+	} else {
+		printf("\nValor %d está na posição %d", valor, resultado + 1);
 	}
+	return 0;
 }
 
-int buscaBinaria(int *v, int valor, int inicio, int fim) 
-{
-  	int meio = (inicio + fim) / 2; // Recebe o indice do meio do veto.
+int buscaBinaria(int *v, int valor){
+	int inicio = 0; 		// inicio do vetor
+	int fim = tamanho - 1; 	// fim do vetor
+	
+	while( inicio <= fim ) { 				// Busca até inicio maior que meio.
+		int meio = ( inicio + fim ) / 2; 	// Pega o meio do vetor.
+		
+		if( v[meio] == valor ){ 			// Retorna o indice do valor.
+			return meio;
+		} else if(v[meio] < valor){ 		// Busca a direita do meio do vetor.
+			inicio = meio + 1;				// Define o inicio a partir do meio do vetor + 1.
+		} else {							// Busca a esquerda do meio do vetor.
+			fim = meio - 1;					// Define o fim no meio do vetor - 1.
+		}
+	}
+	return -1; 			// retorna -1 caso valor não encontrado.
+}
 
-  	if (inicio > fim) // Caso onde o valor não foi encontrado, 
-	{
-    	return -1; // retorna -1.
-  	}
-  	if (v[meio] == valor) // Caso valor encontrado, 
-	{
-    	return meio; // retorna o indice do elemento.
-  	}
-
-  	if (v[meio] > valor) // Se valor maior que meio,
-	{
-    	return buscaBinaria(v, valor, inicio, meio - 1); // busca recursiva pela metade do vetor a esquerda,
-  	} else {
-    	return buscaBinaria(v, valor, meio + 1, fim); // busca recursiva pela metade do vetor a direita.
-  	}
+void impremeVetor(int *v){
+	printf("Vetor { ");
+	for( int i = 0; i < tamanho; i++){
+		if( i == tamanho - 1){
+			printf("%d }\n", v[i]);		
+		} else {
+			printf("%d, ", v[i]);
+		}
+	}	
 }
